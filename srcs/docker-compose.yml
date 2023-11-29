@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+      context: ./srcs/requirements/nginx
+      dockerfile: Dockerfile
+      ports:
+        - "80:80"
+        - "443:443"
+      network: 
+        - docker-network
+      volumes:
+        - ./srcs/requirements/wordpress/data:/var/www/html
+
+  wordpress:
+    build:
+      context: ./srcs/requirements/wordpress
+      dockerfile: Dockerfile
+      ports:
+        - "9000:9000"
+      volumes:
+        - ./srcs/requirements/wordpress/data:/var/www/html
+      network:
+        - docker-network
+
+  mariadb:
+    build:
+      context: ./srcs/requirements/mariadb
+      dockerfile: Dockerfile
+      ports:
+        - "3306:3306"
+      volumes:
+        - ./srcs/requirements/mariadb/data:/var/lib/mysql
+      network:
+        - docker-network
+
+networks:
+  docker-network:
+    driver: bridge
