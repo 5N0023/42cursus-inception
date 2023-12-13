@@ -2,39 +2,61 @@ version: '3'
 
 services:
   nginx:
+    container_name: nginx
     build:
-      context: ./srcs/requirements/nginx
+      context: ./requirements/nginx
       dockerfile: Dockerfile
-      ports:
-        - "80:80"
-        - "443:443"
-      network: 
-        - docker-network
-      volumes:
-        - ./srcs/requirements/wordpress/data:/var/www/html
-
+    depends_on:
+      - wordpress
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - docker-network
+    volumes:
+      - wordpress:/var/www/html
   wordpress:
+    container_name: wordpress
     build:
-      context: ./srcs/requirements/wordpress
+      context: ./requirements/wordpress
       dockerfile: Dockerfile
-      ports:
-        - "9000:9000"
-      volumes:
-        - ./srcs/requirements/wordpress/data:/var/www/html
-      network:
-        - docker-network
+    ports:
+      - "9000:9000"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - docker-network
+    env_file:
+      - .env
+  # db:
+  #   image: mysql
+  #   container_name: mydb
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   volumes:
+  #     - ./data:/var/lib/mysql
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: 1234
+  #     MYSQL_USER: user1
+  #     MYSQL_PASSWORD : mypassword
+  #   ports:
+  #     - 3306:3306
 
-  mariadb:
-    build:
-      context: ./srcs/requirements/mariadb
-      dockerfile: Dockerfile
-      ports:
-        - "3306:3306"
-      volumes:
-        - ./srcs/requirements/mariadb/data:/var/lib/mysql
-      network:
-        - docker-network
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/osboxes/data/wordpress
+      o: bind
+  db:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/osboxes/data/db
+      o: bind
 
 networks:
   docker-network:
     driver: bridge
+
