@@ -3,9 +3,8 @@ version: '3'
 services:
   nginx:
     container_name: nginx
-    build:
-      context: ./requirements/nginx
-      dockerfile: Dockerfile
+    image: nginx
+    build: ./requirements/nginx/.
     depends_on:
       - wordpress
     ports:
@@ -20,9 +19,8 @@ services:
       - CERTS_key=${CERTS_key}
   wordpress:
     container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-      dockerfile: Dockerfile
+    image: wordpress
+    build: ./requirements/wordpress/.
     depends_on:
       - mariadb
     ports:
@@ -31,17 +29,31 @@ services:
       - wordpress:/var/www/html
     networks:
       - docker-network
-    # environment:
-    #   - DOMAIN_NAME=10.11.100.55
-    env_file:
-      - .env
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - WORDPRESS_DB_HOST=${WORDPRESS_DB_HOST}
+      - MYSQL_DB=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASS=${MYSQL_PASS}
+      - WORDPRESS_TITLE=${WORDPRESS_TITLE}
+      - WORDPRESS_ADMIN_USER=${WORDPRESS_ADMIN_USER}
+      - WORDPRESS_ADMIN_PASSWORD=${WORDPRESS_ADMIN_PASSWORD}
+      - WORDPRESS_ADMIN_EMAIL=${WORDPRESS_ADMIN_EMAIL}
+      - WORDPRESS_USER=${WORDPRESS_USER}
+      - WORDPRESS_USER_EMAIL=${WORDPRESS_USER_EMAIL}
+      - WORDPRESS_USER_PASSWORD=${WORDPRESS_USER_PASSWORD}
+      - WORDPRESS_USER_ROLE=${WORDPRESS_USER_ROLE}
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/.
+    image: mariadb
     volumes:
       - mariadb:/var/lib/mysql
-    env_file:
-      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DB=${MYSQL_DB}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASS=${MYSQL_PASS}
     networks:
       - docker-network
     restart: always
