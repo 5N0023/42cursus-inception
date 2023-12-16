@@ -15,32 +15,38 @@ services:
       - docker-network
     volumes:
       - wordpress:/var/www/html
+    environment:
+      - CERTS_certs=${CERTS_certs}
+      - CERTS_key=${CERTS_key}
   wordpress:
     container_name: wordpress
     build:
       context: ./requirements/wordpress
       dockerfile: Dockerfile
+    depends_on:
+      - mariadb
     ports:
       - "9000:9000"
     volumes:
       - wordpress:/var/www/html
     networks:
       - docker-network
+    # environment:
+    #   - DOMAIN_NAME=10.11.100.55
     env_file:
       - .env
-  # db:
-  #   image: mysql
-  #   container_name: mydb
-  #   command: --default-authentication-plugin=mysql_native_password
-  #   restart: always
-  #   volumes:
-  #     - ./data:/var/lib/mysql
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: 1234
-  #     MYSQL_USER: user1
-  #     MYSQL_PASSWORD : mypassword
-  #   ports:
-  #     - 3306:3306
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb/.
+    volumes:
+      - mariadb:/var/lib/mysql
+    env_file:
+      - .env
+    networks:
+      - docker-network
+    restart: always
+    ports:
+      - "3306:3306"
 
 volumes:
   wordpress:
@@ -49,7 +55,7 @@ volumes:
       type: none
       device: /home/osboxes/data/wordpress
       o: bind
-  db:
+  mariadb:
     driver: local
     driver_opts:
       type: none

@@ -1,21 +1,14 @@
 FROM debian:bullseye
 
-# Install mariadb
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y mariadb-server && apt-get -y install systemctl
+# Copy your SQL script to a directory inside the container
 
-RUN apt-get update && apt-get install -y mariadb-server mariadb-client
-
-# Copy mariadb config
-
-# COPY ./conf/mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-
-# Copy mariadb setup script
-
-# COPY ./conf/setup.sh /tmp/setup.sh
-
-# Copy mariadb database
-
-# COPY ./conf/wordpress.sql /tmp/wordpress.sql
-
-# CMD ["bash", "/tmp/setup.sh"]
+COPY ./conf/mariadb.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./conf/wordpress.sql /tmp/wordpress.sql
+COPY ./tools/setup.sh /tmp/setup.sh
+RUN chmod +x /tmp/setup.sh
 
 
+# Start MariaDB when the container starts
+CMD ["/tmp/setup.sh"]
