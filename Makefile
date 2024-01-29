@@ -24,6 +24,6 @@ rm:
 exec:
 	cd srcs && docker-compose exec $(c) bash
 re : down 
-	sudo rm -rf  ~/data/wordpress/* ~/data/db/*
+	sudo rm -rf  /home/mlektaib/data/wordpress/* /home/mlektaib/data/db/*
 	cd srcs && docker-compose build
 	cd srcs && docker-compose up -d
