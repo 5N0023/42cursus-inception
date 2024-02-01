@@ -23,7 +23,10 @@ rm:
 
 exec:
 	cd srcs && docker-compose exec $(c) bash
-re : down 
-	sudo rm -rf  /home/mlektaib/data/wordpress/* /home/mlektaib/data/db/*
+re : down prune
+	sudo rm -rf  /home/mlektaib/data/db/* /home/mlektaib/data/wordpress/* 
 	cd srcs && docker-compose build
 	cd srcs && docker-compose up -d
+
+prune:
+	docker system prune -a
