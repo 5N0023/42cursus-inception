@@ -70,7 +70,8 @@ cd Inception
 	WORDPRESS_USER_PASSWORD=user1
 	WORDPRESS_USER_ROLE=author
 ```
-4. Add mlektaib.42.fr to /etc/hosts
+4. copy created .env file to srcs folder
+5. Add mlektaib.42.fr to /etc/hosts
 ``` 
 127.0.0.1 mlektaib.42.fr
 ```
