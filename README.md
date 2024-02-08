@@ -36,11 +36,11 @@ A step by step series of examples that tell you how to get a development environ
 1. Clone the repository to your local machine:
 
 ```bash
-	git clone https://github.com/5N0023/Inception.git
+git clone https://github.com/5N0023/Inception.git
 ```
 2.  Navigate to the project directory:
 ```bash
-	cd Inception
+cd Inception
 ```
 3. create .env file and fill it
 ```
@@ -76,5 +76,5 @@ A step by step series of examples that tell you how to get a development environ
 ```
 6.  Use make to build and start the containers:
 ``` bash
-	make up
+make up
 ```
