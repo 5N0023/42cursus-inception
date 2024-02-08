@@ -36,11 +36,11 @@ A step by step series of examples that tell you how to get a development environ
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/5N0023/Inception.git
+git clone https://github.com/5N0023/42cursus-inception.git
 ```
 2.  Navigate to the project directory:
 ```bash
-cd Inception
+cd 42cursus-inception
 ```
 3. create .env file and fill it
 ```
